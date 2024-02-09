@@ -1,4 +1,4 @@
-## 🤯 My NVIM setup with Lazy.vim
+## 🤯 My NVIM setup with lazy.nvim
 
 add alias in .zshrc
 ```
