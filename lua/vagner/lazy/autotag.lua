@@ -1,14 +1,8 @@
 return {
   "windwp/nvim-ts-autotag",
-  event = { 'InsertEnter' },
+  after = "nvim-treesitter",
   config = function()
-    local autotag_status_ok, autotag = pcall(require, 'nvim-ts-autotag')
-
-    if not autotag_status_ok then
-      return
-    end
-
-    autotag.setup({})
+    require('nvim-ts-autotag').setup()
   end
 }
 
