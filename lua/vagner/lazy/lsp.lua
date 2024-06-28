@@ -29,22 +29,39 @@ return {
         "lua_ls",
         "rust_analyzer",
         "tsserver",
+        "gopls",
       },
       handlers = {
-        function(server_name)         -- default handler (optional)
+        function(server_name) -- default handler (optional)
           require("lspconfig")[server_name].setup {
             capabilities = capabilities
           }
         end,
 
+        zls = function()
+          local lspconfig = require("lspconfig")
+          lspconfig.zls.setup({
+            root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+            settings = {
+              zls = {
+                enable_inlay_hints = true,
+                enable_snippets = true,
+                warn_style = true,
+              },
+            },
+          })
+          vim.g.zig_fmt_parse_errors = 0
+          vim.g.zig_fmt_autosave = 0
+        end,
         ["lua_ls"] = function()
           local lspconfig = require("lspconfig")
           lspconfig.lua_ls.setup {
             capabilities = capabilities,
             settings = {
               Lua = {
+                runtime = { version = "Lua 5.1" },
                 diagnostics = {
-                  globals = { "vim", "it", "describe", "before_each", "after_each" },
+                  globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
                 }
               }
             }
@@ -58,7 +75,7 @@ return {
     cmp.setup({
       snippet = {
         expand = function(args)
-          require('luasnip').lsp_expand(args.body)           -- For `luasnip` users.
+          require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         end,
       },
       mapping = cmp.mapping.preset.insert({
@@ -69,7 +86,7 @@ return {
       }),
       sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },         -- For luasnip users.
+        { name = 'luasnip' }, -- For luasnip users.
       }, {
         { name = 'buffer' },
       })
@@ -88,3 +105,4 @@ return {
     })
   end
 }
+
