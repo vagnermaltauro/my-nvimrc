@@ -12,6 +12,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    spec = "vagner.lazy",
-    change_detection = { notify = false }
+  rocks = {
+    enabled = false,
+  },
+  spec = "vagner.lazy",
+  change_detection = { notify = false }
 })
