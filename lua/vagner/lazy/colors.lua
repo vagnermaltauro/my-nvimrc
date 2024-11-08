@@ -71,6 +71,7 @@ return {
                 styles = {
                     italic = false,
                 },
+                dark_variant = "moon",
             })
             vim.cmd("colorscheme rose-pine")
 
