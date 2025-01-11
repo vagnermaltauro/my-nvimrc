@@ -9,4 +9,3 @@ return {
     "gpanders/editorconfig.nvim",
     "nvim-treesitter/playground",
 }
-
