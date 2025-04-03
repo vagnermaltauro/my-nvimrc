@@ -17,6 +17,12 @@ return {
     config = function()
         require("conform").setup({
             formatters_by_ft = {
+                javascript = { "biome" },
+                javascriptreact = { "biome" },
+                typescript = { "biome" },
+                typescriptreact = { "biome" },
+                json = { "biome" },
+                jsonc = { "biome" },
             }
         })
         local cmp = require('cmp')
@@ -35,6 +41,7 @@ return {
                 "rust_analyzer",
                 "ts_ls",
                 "gopls",
+                "biome",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -76,6 +83,13 @@ return {
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.json", "*.jsonc" },
+            callback = function()
+                require("conform").format()
+            end,
+        })
 
         cmp.setup({
             snippet = {
