@@ -17,12 +17,12 @@ return {
     config = function()
         require("conform").setup({
             formatters_by_ft = {
-                javascript = { "biome" },
-                javascriptreact = { "biome" },
-                typescript = { "biome" },
-                typescriptreact = { "biome" },
-                json = { "biome" },
-                jsonc = { "biome" },
+                javascript = { "eslint_d" },
+                javascriptreact = { "eslint_d" },
+                typescript = { "eslint_d" },
+                typescriptreact = { "eslint_d" },
+                json = { "eslint_d" },
+                jsonc = { "eslint_d" },
             }
         })
         local cmp = require('cmp')
@@ -41,7 +41,8 @@ return {
                 "rust_analyzer",
                 "ts_ls",
                 "gopls",
-                "biome",
+                -- "biome",
+                "eslint"
             },
             handlers = {
                 function(server_name) -- default handler (optional)
