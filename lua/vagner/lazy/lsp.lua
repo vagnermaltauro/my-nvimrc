@@ -17,12 +17,6 @@ return {
     config = function()
         require("conform").setup({
             formatters_by_ft = {
-                javascript = { "eslint_d" },
-                javascriptreact = { "eslint_d" },
-                typescript = { "eslint_d" },
-                typescriptreact = { "eslint_d" },
-                json = { "eslint_d" },
-                jsonc = { "eslint_d" },
             }
         })
         local cmp = require('cmp')
@@ -39,10 +33,9 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
-                "ts_ls",
                 "gopls",
-                -- "biome",
-                "eslint"
+                "vtsls",
+                "tailwindcss",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -65,6 +58,7 @@ return {
                     })
                     vim.g.zig_fmt_parse_errors = 0
                     vim.g.zig_fmt_autosave = 0
+
                 end,
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
@@ -72,25 +66,30 @@ return {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
-                                runtime = { version = "Lua 5.1" },
-                                diagnostics = {
-                                    globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
-                                }
+                                format = {
+                                    enable = true,
+                                    -- Put format options here
+                                    -- NOTE: the value should be STRING!!
+                                    defaultConfig = {
+                                        indent_style = "space",
+                                        indent_size = "2",
+                                    }
+                                },
                             }
                         }
                     }
+                end,
+                ["tailwindcss"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.tailwindcss.setup({
+                        capabilities = capabilities,
+                        filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte", "heex" },
+                    })
                 end,
             }
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.json", "*.jsonc" },
-            callback = function()
-                require("conform").format()
-            end,
-        })
 
         cmp.setup({
             snippet = {
@@ -105,6 +104,7 @@ return {
                 ["<C-Space>"] = cmp.mapping.complete(),
             }),
             sources = cmp.config.sources({
+                { name = "copilot", group_index = 2 },
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
             }, {
