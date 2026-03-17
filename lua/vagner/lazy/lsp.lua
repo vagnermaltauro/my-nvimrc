@@ -29,7 +29,6 @@ return {
 
         require("fidget").setup({})
         require("mason").setup()
-        local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
@@ -37,7 +36,6 @@ return {
                 "gopls",
                 "vtsls",
                 "tailwindcss",
-                "omnisharp",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -86,13 +84,6 @@ return {
                     lspconfig.tailwindcss.setup({
                         capabilities = capabilities,
                         filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte", "heex" },
-                    })
-                end,
-                ["omnisharp"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.omnisharp.setup({
-                        capabilities = capabilities,
-                        cmd = { mason_bin .. "/OmniSharp" },
                     })
                 end,
             }
